@@ -15,15 +15,13 @@ stored_total=`echo $config | jq -r '.total'`
 
 lastfm_api_result=`curl "http://ws.audioscrobbler.com/2.0/?method=user.getrecenttracks&user=$lastfm_user&api_key=$lastfm_api&format=json&limit=1"`
 
-echo $lastfm_api_result > ~/example.json
-
 total=`echo $lastfm_api_result | jq -r '."recenttracks"."@attr".total'`
 
-function saveresults () {
+saveresults () {
 	jq -n --arg api "$lastfm_api" --arg user "$lastfm_user" --arg instance "$pleroma_instance" --arg bearer "$pleroma_bearer" --arg tot "$total" '{lastfm_api: $api, lastfm_user: $user, pleroma_instance: $instance, pleroma_bearer: $bearer, total: $tot|tonumber}' > $configfn
 }
 
-if [ "$stored_total" == "null" ]
+if [ "$stored_total" = "null" ]
 then
 	echo "No value yet. Storing total of $total for future use."
 	saveresults
