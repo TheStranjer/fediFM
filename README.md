@@ -6,11 +6,20 @@ This is a Last.fm to fediverse (Pleroma) scrobble bridge. You need to get a Last
 
 1. Clone the repository wherever you need it to be
 2. Enter the directory it's in
-3. Edit `.lastfm_api.dat` with the API key from Last.fm
-4. Edit `.lastfm_user.dat` with your Last.fm username
-5. Edit `.pleroma_instance.dat` with your Pleroma instance, like `shitposter.club`
-6. Edit `.pleroma_bearer.dat` with your account's bearer token (DO NOT SHARE THIS WITH ANYBODY)
-7. Install `jq` (on Ubuntu it's `sudo apt install jq -y`)
-8. Create a cron job that looks like this: `* * * * * cd /wherever/you/cloned/this && ./fedifm.sh`
-9. Enjoy!
+3. Edit JSON file to reflect your credentials (see below)
+4. Install `jq` (on Ubuntu it's `sudo apt install jq -y`)
+5. Create a cron job that looks like this: `* * * * * cd /wherever/you/cloned/this/fedifm.sh /your/config/file.json`
+6. Enjoy!
 
+# Config file
+
+The config file should come in the following shape:
+
+```json
+{
+  "lastfm_api": "your lastfm api key here",
+  "lastfm_user": "your lastfm username here",
+  "pleroma_instance": "your instance, eg., whatever.com",
+  "pleroma_bearer": "your bearer token"
+}
+```
