@@ -34,9 +34,9 @@ then
 	exit
 fi
 
-artist=`echo $lastfm_api_result | jq -r '.recenttracks.track' | jq -r '.[0].artist."#text"'`
-title=`echo $lastfm_api_result | jq -r '.recenttracks.track' | jq -r '.[0].name'`
-album=`echo $lastfm_api_result | jq -r '.recenttracks.track' | jq -r '.[0].album."#text"'`
+artist=`echo $lastfm_api_result | jq -r '.recenttracks.track' | jq -r '.[0].artist."#text"' | perl -MHTML::Entities -pe 'decode_entities($_);'`
+title=`echo $lastfm_api_result | jq -r '.recenttracks.track' | jq -r '.[0].name' | perl -MHTML::Entities -pe 'decode_entities($_);'`
+album=`echo $lastfm_api_result | jq -r '.recenttracks.track' | jq -r '.[0].album."#text"' | perl -MHTML::Entities -pe 'decode_entities($_);'`
 
 echo "ARTIST: $artist TITLE: $title ALBUM: $album"
 
