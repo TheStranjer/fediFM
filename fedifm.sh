@@ -40,6 +40,13 @@ album=`echo $lastfm_api_result | jq -r '.recenttracks.track' | jq -r '.[0].album
 
 echo "ARTIST: $artist TITLE: $title ALBUM: $album"
 
+if [ "$artist" = "null" ] || [ "$title" = "null" ] || [ "$album" = "null" ]
+then
+	echo "null output, skipping"
+	exit
+fi
+
+
 json=`jq -n --arg art "$artist" --arg tit "$title" --arg alb "$album" '{artist: $art, title: $tit, album: $alb}'`
 
 echo $json
