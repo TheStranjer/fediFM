@@ -14,11 +14,19 @@ pleroma_bearer=`echo $config | jq -r '.pleroma_bearer'`
 stored_total=`echo $config | jq -r '.total'`
 
 lastfm_api_result=`curl "http://ws.audioscrobbler.com/2.0/?method=user.getrecenttracks&user=$lastfm_user&api_key=$lastfm_api&format=json&limit=1"`
+echo $lastfm_api_result
 
 total=`echo $lastfm_api_result | jq -r '."recenttracks"."@attr".total'`
 
 saveresults () {
-	jq -n --arg api "$lastfm_api" --arg user "$lastfm_user" --arg instance "$pleroma_instance" --arg bearer "$pleroma_bearer" --arg tot "$total" '{lastfm_api: $api, lastfm_user: $user, pleroma_instance: $instance, pleroma_bearer: $bearer, total: $tot|tonumber}' > $configfn
+	saveres=`jq -n --arg api "$lastfm_api" --arg user "$lastfm_user" --arg instance "$pleroma_instance" --arg bearer "$pleroma_bearer" --arg tot "$total" '{lastfm_api: $api, lastfm_user: $user, pleroma_instance: $instance, pleroma_bearer: $bearer, total: $tot|tonumber}'`
+  if [ -z "$saveres" ]
+  then
+    echo "Results blank, aborting"
+    exit
+  else
+    echo "$saveres" > $configfn
+  fi
 }
 
 if [ "$stored_total" = "null" ]
@@ -40,7 +48,7 @@ album=`echo $lastfm_api_result | jq -r '.recenttracks.track' | jq -r '.[0].album
 
 echo "ARTIST: $artist TITLE: $title ALBUM: $album"
 
-if [ "$artist" = "null" ] || [ "$title" = "null" ] || [ "$album" = "null" ]
+if [ "$artist" = "null" ] || [ "$title" = "null" ] || [ "$album" = "null" ] || [ -z "$lastfm_api_result" ]
 then
 	echo "null output, skipping"
 	exit
