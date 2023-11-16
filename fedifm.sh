@@ -45,6 +45,7 @@ fi
 artist=`echo $lastfm_api_result | jq -r '.recenttracks.track' | jq -r '.[0].artist."#text"' | perl -MHTML::Entities -pe 'decode_entities($_);'`
 title=`echo $lastfm_api_result | jq -r '.recenttracks.track' | jq -r '.[0].name' | perl -MHTML::Entities -pe 'decode_entities($_);'`
 album=`echo $lastfm_api_result | jq -r '.recenttracks.track' | jq -r '.[0].album."#text"' | perl -MHTML::Entities -pe 'decode_entities($_);'`
+url=`echo $lastfm_api_result | jq -r '.recenttracks.track' | jq -r '.[0].url'`
 
 echo "ARTIST: $artist TITLE: $title ALBUM: $album"
 
@@ -55,7 +56,7 @@ then
 fi
 
 
-json=`jq -n --arg art "$artist" --arg tit "$title" --arg alb "$album" '{artist: $art, title: $tit, album: $alb}'`
+json=`jq -n --arg art "$artist" --arg tit "$title" --arg alb "$album" --arg url "$url" '{artist: $art, title: $tit, album: $alb, url: $url}'`
 
 echo $json
 
