@@ -49,7 +49,7 @@ url=`echo $lastfm_api_result | jq -r '.recenttracks.track' | jq -r '.[0].url'`
 
 echo "ARTIST: $artist TITLE: $title ALBUM: $album"
 
-if [ "$artist" = "null" ] || [ "$title" = "null" ] || [ "$album" = "null" ] || [ -z "$lastfm_api_result" ]
+if [ "$artist" = "null" ] || [ "$title" = "null" ] || [ "$album" = "null" ] || [ -z "$lastfm_api_result" ] || [ "$artist" = "" ] || [ "$title" = "" ]
 then
 	echo "null output, skipping"
 	exit
